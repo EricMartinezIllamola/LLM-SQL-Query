@@ -30,8 +30,6 @@ def question_to_query(question):
         k=2
     )
 
-    example_selector.select_examples({"question": "List the products that have never been part of any order, along with their current quantity in stock."})
-
     example_prompt = PromptTemplate(
         input_variables=["Question", "SQLQuery"],
         template="Question: {Question}\nSQLQuery: {SQLQuery}",
