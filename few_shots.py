@@ -1,8 +1,8 @@
 few_shots = [
     {"Question" : "Which were the most demanded products in 2022?",
-    "SQLQuery" : "SELECT p.ProductID, p.Brand, p.Category, COUNT(oi.OrderItemID) AS Demand FROM Products p JOIN OrderItems oi ON p.ProductID = oi.ProductID JOIN Orders o ON oi.OrderID = o.OrderID WHERE o.OrderDate BETWEEN '2022-01-01' AND '2022-12-31' GROUP BY p.ProductID, p.Brand, p.Category ORDER BY Demand DESC LIMIT 5"},
-    {"Question" : "Which types of RAM saw the higher sales?",
-    "SQLQuery" : "SELECT p.RAM, SUM(oi.Quantity) AS TotalSales FROM Products p JOIN OrderItems oi ON p.ProductID = oi.ProductID JOIN Orders o ON oi.OrderID = o.OrderID GROUP BY p.RAM ORDER BY TotalSales DESC LIMIT 5"},
+    "SQLQuery" : "SELECT p.ProductID, p.Brand, p.Category, SUM(oi.Quantity) AS Demand FROM Products p JOIN OrderItems oi ON p.ProductID = oi.ProductID JOIN Orders o ON oi.OrderID = o.OrderID WHERE o.OrderDate BETWEEN '2022-01-01' AND '2022-12-31' GROUP BY p.ProductID, p.Brand, p.Category ORDER BY Demand DESC LIMIT 5"},
+    {"Question" : "Which types of RAM saw the higher number of sales?",
+    "SQLQuery" : "SELECT p.RAM, SUM(oi.Quantity) AS SalesNumber FROM Products p JOIN OrderItems oi ON p.ProductID = oi.ProductID JOIN Orders o ON oi.OrderID = o.OrderID GROUP BY p.RAM ORDER BY TotalSales DESC LIMIT 5"},
     {"Question" : "What is the total value of all the products in stock?",
     "SQLQuery" : "SELECT SUM(Price * QuantityInStock) AS TotalValue  FROM Products"},
     {"Question" : "Identify the three vendors that sold more products.",
