@@ -18,7 +18,7 @@ os.environ["api_key"] = st.secrets["api_key"]
 
 def question_to_query(question):
 
-    instructor_embeddings = HuggingFaceEmbeddings()
+    instructor_embeddings = HuggingFaceEmbeddings(model_name='sentence-transformers/all-MiniLM-L6-v2')
     to_vectorize = [" ".join(example.values()) for example in few_shots]
     vectorstore = Chroma.from_texts(to_vectorize, embeddings, metadatas=few_shots)
     example_selector = SemanticSimilarityExampleSelector(
