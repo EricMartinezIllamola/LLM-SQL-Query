@@ -24,7 +24,7 @@ def question_to_query(question):
     for Question in few_shots.keys()
 ]
     vectorstore = FAISS.from_documents(few_shot_docs, embeddings)
-    retriever = vector_db.as_retriever()
+    retriever = vectorstore.as_retriever()
     example_selector = SemanticSimilarityExampleSelector(
         vectorstore=retriever,
         k=2,
