@@ -52,6 +52,6 @@ def question_to_query(question):
     #Exaple of final use
 
     response = db_chain.invoke({"question": question, "top_k": 5})
-    # df = execute_query_with_column_names(response)
+    df = execute_query_with_column_names(response)
 
-    return response
+    return response, df
