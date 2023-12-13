@@ -51,7 +51,7 @@ def question_to_query(question):
 
     #Exaple of final use
 
-    response = db_chain.invoke({"question": "Retrieve all vendors."})
+    response = db_chain.invoke({"question": "Retrieve all vendors.", "top_k": 5})
     # df = execute_query_with_column_names(response)
 
     return response
