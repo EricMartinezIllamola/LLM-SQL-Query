@@ -1,7 +1,8 @@
-# from langchain.embeddings import HuggingFaceInstructEmbeddings
+from langchain.embeddings import HuggingFaceInstructEmbeddings
 # from langchain.vectorstores import FAISS
+from langchain.vectorstores import Chroma
 from langchain.chains.sql_database.prompt import PROMPT_SUFFIX
-# from langchain.prompts import SemanticSimilarityExampleSelector
+from langchain.prompts import SemanticSimilarityExampleSelector
 from langchain.llms import GooglePalm
 from langchain.utilities import SQLDatabase
 from langchain.chains import create_sql_query_chain
@@ -17,22 +18,17 @@ os.environ["api_key"] = st.secrets["api_key"]
 
 def question_to_query(question):
 
-    # instructor_embeddings = HuggingFaceInstructEmbeddings()
-    # vectordb = FAISS
-    # example_selector = SemanticSimilarityExampleSelector.from_examples(
-    #     # This is the list of examples available to select from.
-    #     few_shots,
-    #     # This is the embedding class used to produce embeddings which are used to measure semantic similarity.
-    #     instructor_embeddings,
-    #     # This is the VectorStore class that is used to store the embeddings and do a similarity search over.
-    #     vectordb,
-    #     # This is the number of examples to produce.
-    #     k=2
-    # )
+    instructor_embeddings = HuggingFaceInstructEmbeddings()
+    to_vectorize = [" ".join(example.values()) for example in few_shots]
+    vectorstore = Chroma.from_texts(to_vectorize, embeddings, metadatas=few_shots)
+    example_selector = SemanticSimilarityExampleSelector(
+        vectorstore=vectorstore,
+        k=2,
+    )
 
     example_prompt = PromptTemplate(
         input_variables=["Question", "SQLQuery"],
-        template="Question: {Question}\n{SQLQuery}",
+        template="Question: {Question}\nSQLQuery: {SQLQuery}",
     )
 
     sqlite_prompt = """You are a SQLite expert. Given an input question, first create a syntactically correct SQLite query to answer the question.
@@ -49,7 +45,7 @@ def question_to_query(question):
     """
 
     few_shot_prompt = FewShotPromptTemplate(
-        examples=few_shots,
+        example_selector=example_selector,
         example_prompt=example_prompt,
         prefix=sqlite_prompt,
         suffix=PROMPT_SUFFIX,
