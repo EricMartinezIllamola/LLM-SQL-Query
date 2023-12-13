@@ -51,21 +51,7 @@ def question_to_query(question):
 
     #Exaple of final use
 
-    response = db_chain.invoke({"question": "Retrieve all vendors.", "top_k": 5})
-    # df = execute_query_with_column_names(response)
-
-    return response
-
-def question_to_easy_query(question):
-
-    llm = GooglePalm(google_api_key=os.environ["api_key"], temperature=0)
-    db = SQLDatabase.from_uri("sqlite:///InnovaTech.db", sample_rows_in_table_info=3)
-
-    db_chain = create_sql_query_chain(llm, db)
-
-    #Exaple of final use
-
-    response = db_chain.invoke({"question": "Retrieve all vendors.", "top_k": 5})
+    response = db_chain.invoke({"question": question, "top_k": 5})
     # df = execute_query_with_column_names(response)
 
     return response

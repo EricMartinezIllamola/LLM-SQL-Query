@@ -1,5 +1,5 @@
 import streamlit as st
-from text_to_query_2 import question_to_query, question_to_easy_query
+from text_to_query_2 import question_to_query
 
 st.title("🤖Text to SQL Query")
 
