@@ -1,8 +1,14 @@
-few_shots ={
-    "Which were the most demanded products in 2022?": "SELECT p.ProductID, p.Brand, p.Category, COUNT(oi.OrderItemID) AS Demand FROM Products p JOIN OrderItems oi ON p.ProductID = oi.ProductID JOIN Orders o ON oi.OrderID = o.OrderID WHERE o.OrderDate BETWEEN '2022-01-01' AND '2022-12-31' GROUP BY p.ProductID, p.Brand, p.Category ORDER BY Demand DESC LIMIT 5",
-    "Which types of RAM saw the higher sales?": "SELECT p.RAM, SUM(oi.Quantity) AS TotalSales FROM Products p JOIN OrderItems oi ON p.ProductID = oi.ProductID JOIN Orders o ON oi.OrderID = o.OrderID GROUP BY p.RAM ORDER BY TotalSales DESC LIMIT 5",
-    "What is the total value of all the products in stock?": "SELECT SUM(Price * QuantityInStock) AS TotalValue  FROM Products",
-    "Identify the three vendors that sold more products.": "SELECT v.VendorID, v.VendorName, COUNT(oi.ProductID) AS TotalProductsSold FROM Vendors v JOIN Orders o ON v.VendorID = o.VendorID JOIN OrderItems oi ON o.OrderID = oi.OrderID GROUP BY v.VendorID, v.VendorName ORDER BY TotalProductsSold DESC LIMIT 3",
-    "Identify the customers who have placed orders for both desktops and laptops, along with the total amount spent by each customer.": "SELECT c.CustomerID, c.StoreName, SUM(o.TotalOrderPrice) AS TotalAmountSpentFROM Customers AS cJOIN Orders AS o ON c.CustomerID = o.CustomerIDJOIN OrderItems AS oi ON o.OrderID = oi.OrderIDJOIN Products AS p ON oi.ProductID = p.ProductIDWHERE p.Category IN ('Desktop', 'Laptop')GROUP BY c.CustomerID, c.StoreNameORDER BY TotalAmountSpent DESC",
-    "List the products with the highest price in each category.": "SELECT p.Category, p.ProductID, p.Price FROM Products AS p GROUP BY p.Category, p.ProductID ORDER BY p.Price DESC",
-    }
+few_shots = [
+    {"Question" : "Which were the most demanded products in 2022?",
+    "SQLQuery" : "SELECT p.ProductID, p.Brand, p.Category, COUNT(oi.OrderItemID) AS Demand FROM Products p JOIN OrderItems oi ON p.ProductID = oi.ProductID JOIN Orders o ON oi.OrderID = o.OrderID WHERE o.OrderDate BETWEEN '2022-01-01' AND '2022-12-31' GROUP BY p.ProductID, p.Brand, p.Category ORDER BY Demand DESC LIMIT 5"},
+    {"Question" : "Which types of RAM saw the higher sales?",
+    "SQLQuery" : "SELECT p.RAM, SUM(oi.Quantity) AS TotalSales FROM Products p JOIN OrderItems oi ON p.ProductID = oi.ProductID JOIN Orders o ON oi.OrderID = o.OrderID GROUP BY p.RAM ORDER BY TotalSales DESC LIMIT 5"},
+    {"Question" : "What is the total value of all the products in stock?",
+     "SQLQuery" : "SELECT SUM(Price * QuantityInStock) AS TotalValue  FROM Products"},
+    {"Question" : "Identify the three vendors that sold more products.",
+    "SQLQuery" : "SELECT v.VendorID, v.VendorName, COUNT(oi.ProductID) AS TotalProductsSold FROM Vendors v JOIN Orders o ON v.VendorID = o.VendorID JOIN OrderItems oi ON o.OrderID = oi.OrderID GROUP BY v.VendorID, v.VendorName ORDER BY TotalProductsSold DESC LIMIT 3"},
+    {"Question" : "Identify the customers who have placed orders for both desktops and laptops, along with the total amount spent by each customer.",
+    "SQLQuery" : "SELECT c.CustomerID, c.StoreName, SUM(o.TotalOrderPrice) AS TotalAmountSpentFROM Customers AS cJOIN Orders AS o ON c.CustomerID = o.CustomerIDJOIN OrderItems AS oi ON o.OrderID = oi.OrderIDJOIN Products AS p ON oi.ProductID = p.ProductIDWHERE p.Category IN ('Desktop', 'Laptop')GROUP BY c.CustomerID, c.StoreNameORDER BY TotalAmountSpent DESC"},
+    {"Question" : "List the products with the highest price in each category.",
+    "SQLQuery" : "SELECT p.Category, p.ProductID, p.Price FROM Products AS p GROUP BY p.Category, p.ProductID ORDER BY p.Price DESC"},
+]
