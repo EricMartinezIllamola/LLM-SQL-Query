@@ -1,8 +1,7 @@
-# from langchain.embeddings import HuggingFaceEmbeddings
-# from langchain.schema import Document
-# from langchain.vectorstores import FAISS
+from langchain.embeddings import HuggingFaceInstructEmbeddings
+from langchain.vectorstores import FAISS
 from langchain.chains.sql_database.prompt import PROMPT_SUFFIX
-# from langchain.prompts import SemanticSimilarityExampleSelector
+from langchain.prompts import SemanticSimilarityExampleSelector
 from langchain.llms import GooglePalm
 from langchain.utilities import SQLDatabase
 from langchain.chains import create_sql_query_chain
@@ -17,6 +16,19 @@ from query_to_df import execute_query_with_column_names
 os.environ["api_key"] = st.secrets["api_key"]
 
 def question_to_query(question):
+
+    instructor_embeddings = HuggingFaceInstructEmbeddings()
+    vectordb = FAISS
+    example_selector = SemanticSimilarityExampleSelector.from_examples(
+        # This is the list of examples available to select from.
+        few_shots,
+        # This is the embedding class used to produce embeddings which are used to measure semantic similarity.
+        instructor_embeddings,
+        # This is the VectorStore class that is used to store the embeddings and do a similarity search over.
+        vectordb,
+        # This is the number of examples to produce.
+        k=2
+    )
 
     example_prompt = PromptTemplate(
         input_variables=["Question", "SQLQuery"],
@@ -37,7 +49,7 @@ def question_to_query(question):
     """
 
     few_shot_prompt = FewShotPromptTemplate(
-        examples=few_shots,
+        example_selector=example_selector,
         example_prompt=example_prompt,
         prefix=sqlite_prompt,
         suffix=PROMPT_SUFFIX,

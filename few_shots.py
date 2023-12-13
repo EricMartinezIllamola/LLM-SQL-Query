@@ -16,14 +16,3 @@ few_shots = [
     {"Question" : "Identify the top three customers who have placed the most orders in the last six months, along with the total amount spent by each customer.",
     "SQLQuery" : "SELECT c.CustomerID, c.StoreName, COUNT(DISTINCT o.OrderID) AS TotalOrders, SUM(o.TotalOrderPrice) AS TotalAmountSpent FROM Customers AS c JOIN Orders AS o ON c.CustomerID = o.CustomerID WHERE o.OrderDate BETWEEN date('now', '-6 months') AND date('now') GROUP BY c.CustomerID, c.StoreName ORDER BY TotalOrders DESC LIMIT 3"},
 ]
-
-# extra_few_shots = [
-#     {"Question" : "",
-#     "SQLQuery" : ""},
-#     {"Question" : "",
-#     "SQLQuery" : ""},
-#     {"Question" : "",
-#     "SQLQuery" : ""},
-#     {"Question" : "",
-#     "SQLQuery" : ""},
-# ]
