@@ -1,4 +1,5 @@
 from langchain.embeddings import HuggingFaceEmbeddings
+from langchain.schema import Document
 from langchain.vectorstores import FAISS
 from langchain.chains.sql_database.prompt import PROMPT_SUFFIX
 from langchain.prompts import SemanticSimilarityExampleSelector
@@ -18,8 +19,12 @@ os.environ["api_key"] = st.secrets["api_key"]
 def question_to_query(question):
 
     embeddings = HuggingFaceEmbeddings(model_name='sentence-transformers/all-MiniLM-L6-v2')
-    to_vectorize = [" ".join(example.values()) for example in few_shots]
-    vectorstore = FAISS.from_texts(to_vectorize, embeddings)
+    few_shot_docs = [
+    Document(page_content=Question, metadata={"SQLQuery": few_shots[Question]})
+    for Question in few_shots.keys()
+]
+    vectorstore = FAISS.from_documents(few_shot_docs, embeddings)
+    # retriever = vector_db.as_retriever()
     example_selector = SemanticSimilarityExampleSelector(
         vectorstore=vectorstore,
         k=2,
