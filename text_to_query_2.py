@@ -37,7 +37,7 @@ def question_to_query(question):
     """
 
     few_shot_prompt = FewShotPromptTemplate(
-        example_selector=few_shots,
+        examples=few_shots,
         example_prompt=example_prompt,
         prefix=sqlite_prompt,
         suffix=PROMPT_SUFFIX,
