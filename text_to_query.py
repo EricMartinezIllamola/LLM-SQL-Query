@@ -36,10 +36,10 @@ def question_to_query(question):
     )
 
     sqlite_prompt = """You are a SQLite expert. Given an input question, first create a syntactically correct SQLite query to answer the question.
-    You can order the results to return the most informative data in the database.
+    Unless the user specifies in the question a specific number of examples to obtain, query for at most {top_k} results using the LIMIT clause as per SQLite. You can order the results to return the most informative data in the database.
     Never query for all columns from a table. You must query only the columns that are needed to answer the question. Wrap each column name in backticks (`) to denote them as delimited identifiers.
     Pay attention to use only the column names you can see in the tables below. Be careful to not query for columns that do not exist. Also, pay attention to which column is in which table.
-    Pay attention to use date('now') function to get the current date, if the question involves "today".
+    Pay attention to use date('now') function to get the current date, if the question involves "today" or any relative date such as "in the last three months" or "in the last year". Ensure your queries appropriately account for these temporal references.
     Use JOIN to combine rows from multiple tables when needed.
 
     Use the following format:
@@ -53,7 +53,7 @@ def question_to_query(question):
         example_prompt=example_prompt,
         prefix=sqlite_prompt,
         suffix=PROMPT_SUFFIX,
-        input_variables=["input", "table_info"], #These variables are used in the prefix and suffix
+        input_variables=["input", "table_info", "top_k"], #These variables are used in the prefix and suffix
     )
 
     llm = GooglePalm(google_api_key=os.environ["api_key"], temperature=0)
@@ -61,9 +61,7 @@ def question_to_query(question):
 
     db_chain = create_sql_query_chain(llm, db, prompt=few_shot_prompt)
 
-    #Exaple of final use
+    response = db_chain.invoke({"question": question, "top_k": 5})
+    df = execute_query_with_column_names(response)
 
-    response = db_chain.invoke({"question": question})
-    # df = execute_query_with_column_names(response)
-
-    return response
+    return response, df
