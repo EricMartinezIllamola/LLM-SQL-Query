@@ -1,4 +1,4 @@
-from langchain.embeddings import HuggingFaceInstructEmbeddings
+from langchain.embeddings import HuggingFaceEmbeddings
 # from langchain.vectorstores import FAISS
 from langchain.vectorstores import Chroma
 from langchain.chains.sql_database.prompt import PROMPT_SUFFIX
@@ -18,7 +18,7 @@ os.environ["api_key"] = st.secrets["api_key"]
 
 def question_to_query(question):
 
-    instructor_embeddings = HuggingFaceInstructEmbeddings()
+    instructor_embeddings = HuggingFaceEmbeddings()
     to_vectorize = [" ".join(example.values()) for example in few_shots]
     vectorstore = Chroma.from_texts(to_vectorize, embeddings, metadatas=few_shots)
     example_selector = SemanticSimilarityExampleSelector(
