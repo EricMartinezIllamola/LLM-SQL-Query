@@ -18,8 +18,8 @@ os.environ["api_key"] = st.secrets["api_key"]
 def question_to_query(question):
 
     embeddings = HuggingFaceEmbeddings(model_name='sentence-transformers/all-MiniLM-L6-v2')
-    # to_vectorize = [" ".join(example.values()) for example in few_shots]
-    vectorstore = FAISS.from_documents(few_shots, embeddings)
+    to_vectorize = [" ".join(example.values()) for example in few_shots]
+    vectorstore = FAISS.from_texts(to_vectorize, embeddings)
     example_selector = SemanticSimilarityExampleSelector(
         vectorstore=vectorstore,
         k=2,
