@@ -13,6 +13,18 @@ def execute_query_with_column_names(query):
             df = pd.DataFrame(result, columns=column_names)
             return df
 
+        except sqlite3.Error as e:
+            # Handle SQLite-specific errors
+            error_message = str(e)
+            st.error(f"SQLite Error: {error_message}")
+            raise RuntimeError(error_message)
+
+        except Exception as e:
+            # Handle other exceptions
+            error_message = str(e)
+            st.error(f"Error: {error_message}")
+            raise RuntimeError(error_message)
+
         finally:
             cursor.close()
 
