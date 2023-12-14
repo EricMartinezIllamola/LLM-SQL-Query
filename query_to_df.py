@@ -1,5 +1,6 @@
 import pandas as pd
 import sqlite3
+import streamlit as st
 
 def execute_query_with_column_names(query):
     with sqlite3.connect('file:InnovaTech.db?mode=ro', uri=True) as connection:
