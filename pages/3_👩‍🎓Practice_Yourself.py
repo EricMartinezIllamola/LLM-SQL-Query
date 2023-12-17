@@ -9,20 +9,16 @@ if 'df_1' not in st.session_state:
 if 'df_2' not in st.session_state:
     st.session_state['df_2'] = [""]
 
-if 'query_2' not in st.session_state:
-    st.session_state['query_2'] = ""
-
 show_df_1 = st.toggle("Show Chatbot Dataframe")
 
 if show_df_1:
     st.dataframe(st.session_state['df_1'], use_container_width=True, hide_index=True)
 
-question_2 = st.text_area("#", value=st.session_state['query_2'], label_visibility="hidden", placeholder="Write the SQL query here and press Ctrl+Enter")
+question_2 = st.text_area("#", label_visibility="hidden", placeholder="Write the SQL query here and press Ctrl+Enter")
 
 if question_2:
     df_2 = execute_query_with_column_names(question_2)
     st.session_state['df_2'] = df_2
-    st.session_state['query_2'] = question_2
 
 st.dataframe(st.session_state['df_2'], use_container_width=True, hide_index=True)
 
