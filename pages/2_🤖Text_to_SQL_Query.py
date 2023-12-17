@@ -18,7 +18,7 @@ if question_1:
     query_1, df_1 = question_to_query(question_1)
     st.session_state['df_1'] = df_1
     st.session_state['query_1'] = query_1
-    st.session_state['question_1'] = question_2
+    st.session_state['question_1'] = question_1
 
 st.write(st.session_state['question_1'])
 
