@@ -15,7 +15,7 @@ if 'question_1' not in st.session_state:
 question_1 = st.text_area("#", label_visibility="hidden", placeholder="Write your question here and press Ctrl+Enter")
 
 if question_1:
-    if not any(char.isalpha() for char in question):
+    if not any(char.isalpha() for char in question_1):
         st.error("Invalid Question. Please provide a meaningful question.")
     else:
         query_1, df_1 = question_to_query(question_1)
